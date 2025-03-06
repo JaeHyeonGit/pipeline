@@ -1,0 +1,113 @@
+pipeline {
+    agent any
+
+// 필요한 내용 변수 지정
+    environment {
+        DOCKER_IMAGE = "jswan-flask"
+        NECR_PATH = "483106397391.dkr.ecr.ap-northeast-2.amazonaws.com"
+        AWS_CREDENTIAL_NAME = "jswan-ecr"
+        REGION = 'ap-northeast-2'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo "Git Checkout"
+                
+                git branch: 'main',
+                credentialsId: 'jswon_github',
+                url: 'https://github.com/cloit-jswan/jswan-project.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo "Build Docker Image"
+                script {
+                    // Docker 파일을 통해 이미지 빌드
+                    def buildVersion = env.BUILD_NUMBER
+                    appimage = docker.build("${DOCKER_IMAGE}:${buildVersion}", '.')
+                    sh "docker tag ${DOCKER_IMAGE}:${buildVersion} ${NECR_PATH}/${DOCKER_IMAGE}:${buildVersion}.0"
+                }
+            }
+        }
+        
+        stage('Push') {
+            steps {
+                echo 'Pushing Docker image to Amazon ECR'
+                
+                // Amazon ECR 레지스트리에 Docker 이미지 푸시
+                script {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${AWS_CREDENTIAL_NAME}"]]) {
+                        docker.withRegistry("https://${NECR_PATH}", "ecr:${REGION}:${AWS_CREDENTIAL_NAME}") {
+                            // 이미지를 푸시
+                            def buildVersion = env.BUILD_NUMBER
+                            docker.image("${NECR_PATH}/${DOCKER_IMAGE}:${buildVersion}.0").push()
+                            
+                            //생성된 이미지 삭제
+                            sh """
+                              docker rmi '${NECR_PATH}/${DOCKER_IMAGE}:${buildVersion}.0'
+                              docker rmi '${DOCKER_IMAGE}:${buildVersion}'
+                            """
+                            
+                        }
+                    }
+                }
+            }
+        }
+		
+        stage('Modify Manifests') {
+            steps {
+                script {
+                    def buildVersion = env.BUILD_NUMBER
+                    //def oldVersion = Integer.parseInt(env.BUILD_NUMBER) - 1
+                    // kustomize를 사용하여 매니페스트 파일의 이미지 태그 변경
+                    sh """
+                      cd /var/jenkins_home/workspace/jswan-project
+                      kustomize edit set image '${NECR_PATH}/${DOCKER_IMAGE}:${buildVersion}.0'
+                      kustomize build . > deployment.yaml
+                    """
+                    
+                }
+            }
+        }
+
+        stage('Commit and Push Manifests') {
+            steps {
+                script {
+                def buildVersion = env.BUILD_NUMBER
+                    withCredentials([
+            gitUsernamePassword(credentialsId: 'jswon_github', gitToolName: 'Default')
+        ]) {
+            sh """
+                 # modify some files
+                
+                
+                 cd /var/jenkins_home/workspace/jswan-project
+                 mkdir ../deployment_jswan
+                 cp deployment.yaml ../deployment_jswan
+                 
+                 cd ../deployment_jswan
+                 
+                 git init
+                 git remote add k8s https://github.com/cloit-jswan/k8s-manifest
+                 
+                 git checkout -b main
+                 
+                 git add deployment.yaml
+                 git commit -m 'Update image tag to ${buildVersion}.0'
+
+                 git push https://github.com/cloit-jswan/k8s-manifest main --force
+                 
+                 cd ../jswan-project
+                 rm -rf ../deployment_jswan
+                 
+            """
+        }
+                    
+                }
+            }
+        }
+    }
+
+}
