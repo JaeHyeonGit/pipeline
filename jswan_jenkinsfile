@@ -4,7 +4,7 @@ pipeline {
 // 필요한 내용 변수 지정
     environment {
         DOCKER_IMAGE = "jswan-flask"
-        NECR_PATH = "483106397391.dkr.ecr.ap-northeast-2.amazonaws.com"
+        NECR_PATH = ""
         AWS_CREDENTIAL_NAME = "jswan-ecr"
         REGION = 'ap-northeast-2'
     }
