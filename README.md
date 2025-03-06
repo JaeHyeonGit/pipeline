@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/5ab44506-479e-41e4-8d12-a09932c7f409)# pipeline
+# pipeline
 ![image](https://github.com/user-attachments/assets/2673341c-8c8c-4e3c-8804-b3084c81e92f)
 
 1. 개발자가 Source를 변경하여 GitHub로 Push
