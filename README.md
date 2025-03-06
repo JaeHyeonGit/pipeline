@@ -12,19 +12,19 @@
 Pipeline 단계 별 설명
 
 # CI 구성_CheckOut
-https://www.notion.so/CI-_CheckOut-e9b42cd2ffc34990834a6a134ec4fae7?pvs=4
+[https://www.notion.so/CI-_CheckOut-e9b42cd2ffc34990834a6a134ec4fae7?pvs=4](https://sturdy-suede-7aa.notion.site/CI-_CheckOut-e9b42cd2ffc34990834a6a134ec4fae7?pvs=4)
 
 # **CI 구성_Build**
-https://www.notion.so/CI-_Build-befc136273ec47a484a142394709ee97?pvs=4
+[https://www.notion.so/CI-_Build-befc136273ec47a484a142394709ee97?pvs=4](https://sturdy-suede-7aa.notion.site/CI-_Build-befc136273ec47a484a142394709ee97?pvs=4)
 
 # CI 구성_Push
-https://www.notion.so/CI-_Push-18ba28f796f149e58bebc074476168a1?pvs=4
+[https://www.notion.so/CI-_Push-18ba28f796f149e58bebc074476168a1?pvs=4](https://sturdy-suede-7aa.notion.site/CI-_Push-18ba28f796f149e58bebc074476168a1?pvs=4)
 
 # CI 구성_Modify Manifests & Git Push
-https://www.notion.so/CI-_Modify-Manifests-Git-Push-34d36a13eb604098af047d8f3290004e?pvs=4
+[https://www.notion.so/CI-_Modify-Manifests-Git-Push-34d36a13eb604098af047d8f3290004e?pvs=4](https://sturdy-suede-7aa.notion.site/CI-_Modify-Manifests-Git-Push-34d36a13eb604098af047d8f3290004e?pvs=4)
 
 # CD 구성_ArgoCD
-https://www.notion.so/CD-_ArgoCD-8243c6f52262436885a1a598ebf59113?pvs=4
+[https://www.notion.so/CD-_ArgoCD-8243c6f52262436885a1a598ebf59113?pvs=4](https://sturdy-suede-7aa.notion.site/CD-_ArgoCD-8243c6f52262436885a1a598ebf59113?pvs=4)
 
 # ArgoCD_TroubleShooting
-https://www.notion.so/ArgoCD_TroubleShooting-505d72aa45004960a20a53377ce456f3?pvs=4
+[https://www.notion.so/ArgoCD_TroubleShooting-505d72aa45004960a20a53377ce456f3?pvs=4](https://sturdy-suede-7aa.notion.site/ArgoCD_TroubleShooting-505d72aa45004960a20a53377ce456f3?pvs=4)
